@@ -1,4 +1,4 @@
-package congestion.calculator;
+package io.github.bluething.congestion.calculator;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

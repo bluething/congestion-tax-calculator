@@ -1,7 +1,4 @@
-package congestion.calculator;
-
-import java.util.*;
-import java.text.*;
+package io.github.bluething.congestion.calculator;
 
 public class Car implements Vehicle {
 
