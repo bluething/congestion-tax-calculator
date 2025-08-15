@@ -1,0 +1,43 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: congestion-tax-calculator
+  main:
+    banner-mode: off
+  threads:
+    virtual:
+      enabled: true
+
+# Congestion Tax Configuration
+congestion:
+  tax:
+    max-daily-tax: 60
+    single-charge-interval-minutes: 60
+    toll-free-months: [7]  # July
+    toll-free-vehicles: [Motorcycle, Tractor, Emergency, Diplomat, Foreign, Military]
+    all-vehicle-types: [Car, Motorcycle, Tractor, Emergency, Diplomat, Foreign, Military]
+
+    # Time slots with fees (can be externalized to database later)
+    time-slots:
+      "06:00-06:29": 8
+      "06:30-06:59": 13
+      "07:00-07:59": 18
+      "08:00-08:29": 13
+      "08:30-14:59": 8
+      "15:00-15:29": 13
+      "15:30-16:59": 18
+      "17:00-17:59": 13
+      "18:00-18:29": 8
+      "18:30-05:59": 0
+
+    # Holidays by year (can be moved to database/external service)
+    holidays:
+      "2013": ["01-01", "03-29", "04-01", "05-01", "05-09", "06-06", "06-21", "11-01", "12-24", "12-25", "12-26", "12-31"]
+
+    # Days before holidays (also toll-free)
+    days-before-holidays:
+      "2013": ["03-28", "04-30", "05-08", "06-05"]
