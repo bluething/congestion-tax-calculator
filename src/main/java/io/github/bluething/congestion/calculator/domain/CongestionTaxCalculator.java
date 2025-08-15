@@ -12,10 +12,11 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-class CongestionTaxCalculator {
+class CongestionTaxCalculator implements TaxCalculator {
 
     private TaxRulesConfig taxRulesConfig;
-    
+
+    @Override
     public int getTax(Vehicle vehicle, LocalDateTime[] dates) {
         if (dates == null || dates.length == 0) {
             log.debug("No dates provided for tax calculation");
@@ -72,6 +73,7 @@ class CongestionTaxCalculator {
         return isTollFree;
     }
 
+    @Override
     public int getTollFee(LocalDateTime date, Vehicle vehicle)
     {
         if (date == null) {
@@ -116,7 +118,8 @@ class CongestionTaxCalculator {
         else return 0;
     }
 
-    private boolean isTollFreeDate(LocalDateTime date) {
+    @Override
+    public boolean isTollFreeDate(LocalDateTime date) {
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
             log.debug("Weekend date: {}", date.toLocalDate());
