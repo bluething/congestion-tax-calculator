@@ -10,8 +10,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
 record TaxCalculationRequest(@NotNull(message = "Vehicle type is required")
                              @Pattern(regexp = "Car|Motorcycle|Tractor|Emergency|Diplomat|Foreign|Military",
                                      message = "Vehicle type must be one of: Car, Motorcycle, Tractor, Emergency, Diplomat, Foreign, Military")
