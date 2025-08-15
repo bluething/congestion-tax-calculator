@@ -64,4 +64,20 @@ class TaxRulesConfig {
                     "06-05"  // Day before National Day
             )
     );
+
+    public boolean isTollFreeMonth(int month) {
+        return tollFreeMonths.contains(month);
+    }
+
+    public boolean isTollFreeVehicle(String vehicleType) {
+        return tollFreeVehicles.contains(vehicleType);
+    }
+
+    public List<String> getHolidaysForYear(int year) {
+        return holidays.getOrDefault(String.valueOf(year), Collections.emptyList());
+    }
+
+    public List<String> getDaysBeforeHolidaysForYear(int year) {
+        return daysBeforeHolidays.getOrDefault(String.valueOf(year), Collections.emptyList());
+    }
 }
