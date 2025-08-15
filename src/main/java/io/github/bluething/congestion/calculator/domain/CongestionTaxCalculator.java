@@ -23,7 +23,7 @@ class CongestionTaxCalculator {
         }
 
         if (isTollFreeVehicle(vehicle)) {
-            log.debug("Vehicle type {} is toll-free", vehicle.getVehicleType());
+            log.debug("Vehicle type {} is toll-free", vehicle == null ? "unknown" : vehicle.getVehicleType());
             return 0;
         }
 
@@ -64,7 +64,7 @@ class CongestionTaxCalculator {
     }
 
     private boolean isTollFreeVehicle(Vehicle vehicle) {
-        if (vehicle == null) return false;
+        if (vehicle == null) return true;
         String vehicleType = vehicle.getVehicleType();
         boolean isTollFree = taxRulesConfig.isTollFreeVehicle(vehicleType);
 
