@@ -73,6 +73,10 @@ class TaxRulesConfig {
         return tollFreeVehicles.contains(vehicleType);
     }
 
+    public boolean isValidVehicleType(String vehicleType) {
+        return allVehicleTypes.contains(vehicleType);
+    }
+
     public List<String> getHolidaysForYear(int year) {
         return holidays.getOrDefault(String.valueOf(year), Collections.emptyList());
     }
