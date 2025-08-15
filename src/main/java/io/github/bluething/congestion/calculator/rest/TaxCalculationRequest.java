@@ -12,20 +12,11 @@ import java.util.List;
 
 @Getter
 @Setter
-class TaxCalculationRequest {
-    @NotNull(message = "Vehicle type is required")
-    @Pattern(regexp = "Car|Motorcycle|Tractor|Emergency|Diplomat|Foreign|Military",
-            message = "Vehicle type must be one of: Car, Motorcycle, Tractor, Emergency, Diplomat, Foreign, Military")
-    private String vehicleType;
+record TaxCalculationRequest(@NotNull(message = "Vehicle type is required")
+                             @Pattern(regexp = "Car|Motorcycle|Tractor|Emergency|Diplomat|Foreign|Military",
+                                     message = "Vehicle type must be one of: Car, Motorcycle, Tractor, Emergency, Diplomat, Foreign, Military")
+                             String vehicleType,
 
-    @NotEmpty(message = "At least one passage time is required")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private List<LocalDateTime> passageTimes;
-
-    public TaxCalculationRequest() {}
-
-    public TaxCalculationRequest(String vehicleType, List<LocalDateTime> passageTimes) {
-        this.vehicleType = vehicleType;
-        this.passageTimes = passageTimes;
-    }
-}
+                             @NotEmpty(message = "At least one passage time is required")
+                             @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                             List<LocalDateTime> passageTimes) {}
