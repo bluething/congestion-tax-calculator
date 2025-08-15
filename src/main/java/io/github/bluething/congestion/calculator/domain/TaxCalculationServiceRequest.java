@@ -11,18 +11,11 @@ import java.util.List;
 public class TaxCalculationServiceRequest {
     private String vehicleType;
     private List<LocalDateTime> passageTimes;
-    private boolean groupByDay = true; // Default to proper daily grouping
 
     public TaxCalculationServiceRequest() {}
 
     public TaxCalculationServiceRequest(String vehicleType, List<LocalDateTime> passageTimes) {
         this.vehicleType = vehicleType;
         this.passageTimes = passageTimes;
-    }
-
-    public TaxCalculationServiceRequest(String vehicleType, List<LocalDateTime> passageTimes, boolean groupByDay) {
-        this.vehicleType = vehicleType;
-        this.passageTimes = passageTimes;
-        this.groupByDay = groupByDay;
     }
 }
