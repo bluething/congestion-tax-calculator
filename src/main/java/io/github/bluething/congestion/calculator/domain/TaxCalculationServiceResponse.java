@@ -3,7 +3,6 @@ package io.github.bluething.congestion.calculator.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
