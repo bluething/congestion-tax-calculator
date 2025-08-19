@@ -11,6 +11,11 @@ spring:
   threads:
     virtual:
       enabled: true
+# Cache configuration
+  cache:
+    cache-names: vehicleTypes,tollSchedule,tollFreeStatus,holidayCache
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=1h
 
 # Congestion Tax Configuration
 congestion:

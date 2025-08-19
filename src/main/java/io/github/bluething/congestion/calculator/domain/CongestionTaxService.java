@@ -2,6 +2,7 @@ package io.github.bluething.congestion.calculator.domain;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -134,5 +135,51 @@ class CongestionTaxService implements TaxService {
             return "Outside toll hours (18:30-05:59)";
         }
         return "Regular toll period - " + fee + " SEK";
+    }
+
+
+
+    @Override
+    @Cacheable("vehicleTypes")
+    public List<String> getSupportedVehicleTypes() {
+        return taxRulesConfig.getAllVehicleTypes();
+    }
+
+    @Override
+    @Cacheable("tollSchedule")
+    public Map<String, Object> getTollSchedule() {
+        log.debug("Retrieving toll schedule information");
+
+        Map<String, Object> schedule = new LinkedHashMap<>();
+        schedule.put("description", "Congestion tax hours and amounts for Gothenburg");
+        schedule.put("currency", "SEK");
+        schedule.put("maxDailyAmount", taxRulesConfig.getMaxDailyTax());
+        schedule.put("singleChargeRule", taxRulesConfig.getSingleChargeIntervalMinutes() + " minutes - highest fee applies");
+        schedule.put("tollFreeMonths", taxRulesConfig.getTollFreeMonths());
+
+        List<Map<String, Object>> timeSlots = taxRulesConfig.getTimeSlots()
+                .entrySet()
+                .stream()
+                .map(entry -> {
+                    Map<String, Object> slot = new HashMap<>();
+                    slot.put("timeRange", entry.getKey());
+                    slot.put("amount", entry.getValue());
+                    return slot;
+                })
+                .collect(Collectors.toList());
+
+        schedule.put("timeSlots", timeSlots);
+        schedule.put("tollFreeDays", Arrays.asList(
+                "Weekends (Saturday & Sunday)",
+                "Public holidays",
+                "Days before public holidays",
+                "July (entire month)"
+        ));
+
+        schedule.put("tollFreeVehicles", getSupportedVehicleTypes().stream()
+                .filter(taxRulesConfig::isTollFreeVehicle)
+                .collect(Collectors.toList()));
+
+        return schedule;
     }
 }
