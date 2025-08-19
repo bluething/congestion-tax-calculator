@@ -44,6 +44,20 @@ class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(error);
     }
+    @ExceptionHandler(java.time.format.DateTimeParseException.class)
+    public ResponseEntity<ErrorResponse> handleDateTimeParseException(java.time.format.DateTimeParseException e) {
+        log.warn("Date time parse error: {}", e.getMessage());
+
+        String userFriendlyMessage = "Invalid date format. Use ISO format: 2013-02-07T06:23:27";
+
+        ErrorResponse error = ErrorResponse.of(
+                "INVALID_DATE_FORMAT",
+                userFriendlyMessage,
+                HttpStatus.BAD_REQUEST.value()
+        );
+
+        return ResponseEntity.badRequest().body(error);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException e) {
