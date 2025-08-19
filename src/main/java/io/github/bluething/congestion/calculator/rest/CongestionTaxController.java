@@ -89,28 +89,42 @@ class CongestionTaxController {
 
         log.info("Received simple tax calculation request for vehicle: {}", vehicleType);
 
-        try {
-            List<LocalDateTime> parsedTimes = Arrays.stream(passageTimes.split(","))
-                    .map(String::trim)
-                    .map(LocalDateTime::parse)
-                    .collect(Collectors.toList());
+        List<LocalDateTime> parsedTimes = Arrays.stream(passageTimes.split(","))
+                .map(String::trim)
+                .map(LocalDateTime::parse)
+                .collect(Collectors.toList());
 
-            TaxCalculationRequest webRequest = new TaxCalculationRequest(vehicleType, parsedTimes);
+        TaxCalculationRequest webRequest = new TaxCalculationRequest(vehicleType, parsedTimes);
 
-            TaxCalculationServiceRequest serviceRequest = dtoMapper.toServiceRequest(webRequest);
+        TaxCalculationServiceRequest serviceRequest = dtoMapper.toServiceRequest(webRequest);
 
-            TaxCalculationServiceResponse serviceResponse = taxService.calculateTax(serviceRequest);
+        TaxCalculationServiceResponse serviceResponse = taxService.calculateTax(serviceRequest);
 
-            TaxCalculationResponse webResponse = dtoMapper.toWebResponse(serviceResponse);
+        TaxCalculationResponse webResponse = dtoMapper.toWebResponse(serviceResponse);
 
-            log.info("Simple tax calculation completed for vehicle: {}, Total: {} SEK",
-                    vehicleType, webResponse.totalTax());
+        log.info("Simple tax calculation completed for vehicle: {}, Total: {} SEK",
+                vehicleType, webResponse.totalTax());
 
-            return ResponseEntity.ok(webResponse);
+        return ResponseEntity.ok(webResponse);
+    }
 
-        } catch (Exception e) {
-            log.error("Error in simple tax calculation: {}", e.getMessage());
-            throw e; // Let global exception handler deal with it
-        }
+    @GetMapping("/vehicle-types")
+    @Operation(
+            summary = "Get supported vehicle types",
+            description = "Returns list of all supported vehicle types and their toll-free status"
+    )
+    public ResponseEntity<List<String>> getSupportedVehicleTypes() {
+        List<String> vehicleTypes = taxService.getSupportedVehicleTypes();
+        return ResponseEntity.ok(vehicleTypes);
+    }
+
+    @GetMapping("/toll-schedule")
+    @Operation(
+            summary = "Get toll schedule information",
+            description = "Returns the current toll schedule with time slots, fees, and toll-free information"
+    )
+    public ResponseEntity<Object> getTollSchedule() {
+        Object schedule = taxService.getTollSchedule();
+        return ResponseEntity.ok(schedule);
     }
 }
