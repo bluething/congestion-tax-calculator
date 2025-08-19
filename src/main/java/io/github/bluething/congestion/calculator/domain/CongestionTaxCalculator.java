@@ -14,7 +14,7 @@ import java.util.*;
 @Slf4j
 class CongestionTaxCalculator implements TaxCalculator {
 
-    private TaxRulesConfig taxRulesConfig;
+    private final TaxRulesConfig taxRulesConfig;
 
     @Override
     public int getTax(Vehicle vehicle, LocalDateTime[] dates) {
